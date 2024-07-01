@@ -1,0 +1,93 @@
+﻿<Window x:Class="Hotel.EditClient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Closing="EditClient_Closing"
+        mc:Ignorable="d" 
+        Title="Изменение данных клиента" MinHeight="600" MinWidth="950">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="35" />
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="#EECFAF" BorderThickness="1" Padding="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="10" Padding="2" Background="White" BorderThickness="1"  BorderBrush="#D9D9D9">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border Background="#210E0D" Padding="25">
+        <Grid  Background="White" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBox FontSize="30" x:Name="Surname" MaxLength="20" FontWeight="Bold"/>
+                <TextBox FontSize="30" x:Name="ClientName" MaxLength="20" FontWeight="Bold"/>
+                <TextBox FontSize="30" x:Name="Patronymic" MaxLength="20" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                <Label  Content="Телефон: " />
+                <TextBox x:Name="Phone" MaxLength="11"></TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                <Label  Content="Почта:" />
+                <TextBox x:Name="Email" MaxLength="20"></TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                <Label  Content="День рождения:"/>
+                <DatePicker FontSize="20"  x:Name="Birthday" DisplayDateStart="1923-01-01" DisplayDateEnd="2009-12-07">
+                    <DatePicker.BlackoutDates>
+                        <CalendarDateRange Start="{x:Static sys:DateTime.Today}"  />
+                    </DatePicker.BlackoutDates>
+                </DatePicker>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                <Label  Content="Пол: " />
+                <RadioButton VerticalAlignment="Center" FontSize="20" x:Name="GenderWomen" Margin="10 0 ">Ж</RadioButton>
+                <RadioButton VerticalAlignment="Center" FontSize="20" x:Name="GenderMen">M</RadioButton>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Orientation="Horizontal">
+                <Label  Content="Серия паспорта: " />
+                <TextBox x:Name="SeriesPassport" MaxLength="4"></TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                <Label  Content="Номер паспорта: "/>
+                <TextBox x:Name="NumberPassport" MaxLength="6"></TextBox>
+            </StackPanel>
+            <Button x:Name="SaveClient" Click="SaveClient_Click" HorizontalAlignment="Center" Content="Cохранить" Grid.ColumnSpan="2" Grid.Row="4"/>
+        </Grid>
+    </Border>
+</Window>

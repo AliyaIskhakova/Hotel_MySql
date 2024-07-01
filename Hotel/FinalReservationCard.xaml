@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Hotel.FinalReservationCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hotel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="35" />
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="#EECFAF" BorderThickness="1" Padding="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Padding="10"  Grid.Column="0">
+            <StackPanel Background="White">
+                <Border Margin="0 7 0 0">
+                    <Grid VerticalAlignment="Center">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+                            <Label x:Name="TariffName" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="40" Margin="10"></Label>
+                        </StackPanel>
+
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
+                            <Label x:Name="TarifCardList1" />
+                            <Label x:Name="TarifCardList2" />
+                            <Label x:Name="TarifCardList3" />
+                            <Label x:Name="TarifCardList4" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border Margin="10" Grid.Column="1">
+            <StackPanel Background="White" Grid.Column="1">
+                <Label x:Name="ReservationCost" HorizontalAlignment="Center" FontWeight="Bold" FontSize="40"></Label>
+                <Label x:Name="ReservationInfo" HorizontalAlignment="Center" FontSize="24"></Label>
+                <Button x:Name="ChoiceTarifButton" Margin="5" >Забронировать</Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

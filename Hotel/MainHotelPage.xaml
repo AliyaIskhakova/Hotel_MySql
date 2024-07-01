@@ -1,0 +1,302 @@
+﻿<Window x:Class="Hotel.MainHotelPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:clientCard ="clr-namespace:Hotel"
+        WindowState="Maximized"
+        x:Name="MainHotelWindow"
+        mc:Ignorable="d"
+        Title="Гостиница" 
+        MinHeight="800" MinWidth="1366">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="35" />
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="#EECFAF" BorderThickness="1" Padding="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="10" Padding="2" Background="White" BorderThickness="1"  BorderBrush="#D9D9D9">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+
+        <Style TargetType="DatePicker" x:Key="RoomSearch">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Margin" Value="15 0"/>
+        </Style>
+
+        <Style TargetType="DatePicker" x:Key="ReservationSearch">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="447"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style x:Key="InformationForReservation" TargetType="TextBox">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="10" Padding="2" Background="White" BorderThickness="1"  BorderBrush="#D9D9D9">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="MenuItem" >
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="LabelForFinalReservatin">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="ForReservatin">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Background="#210E0D" >
+
+        <Menu FontSize="20" Background="White"  VerticalAlignment="Top">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem   Grid.Column="0" HorizontalAlignment="Center">
+                <MenuItem.Icon>
+                    <Image Source="/Photo/logo.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="_Клиенты" Grid.Column="1" HorizontalAlignment="Center" Height="29" VerticalAlignment="Top" Click="MenuItem_Client"  ></MenuItem>
+            <MenuItem Header="_Номера" Grid.Column="2" HorizontalAlignment="Center" Click="MenuItem_Rooms"/>
+            <MenuItem Header="_Тарифы" Grid.Column="3" HorizontalAlignment="Center" Click="MenuItem_Tarif" ></MenuItem>
+            <MenuItem Header="_Бронирования"  Grid.Column="4" HorizontalAlignment="Center" Click="MenuItem_Reservation"></MenuItem>
+        </Menu>
+
+        <Grid x:Name="Rooms"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel  VerticalAlignment="Top" Grid.Column="0">
+                <Border Padding="30">
+                    <StackPanel Background="White">
+                        <Label FontSize="30" HorizontalAlignment="Center" FontFamily="Segoe UI Semibold">Бронирование</Label>
+                        <Label Margin="25,0,15,0" Content="Дата заезда"  />
+                        <DatePicker x:Name="CheckInDatepicker" Style="{StaticResource RoomSearch}" DisplayDateEnd="2025-01-01" DisplayDateStart="2023-08-12" >
+                            <DatePicker.BlackoutDates>
+                                <CalendarDateRange End="{x:Static sys:DateTime.Today}"  />
+                            </DatePicker.BlackoutDates>
+                        </DatePicker>
+
+                        <Label Margin="25,0,15,0" Content="Дата выезда" />
+                        <DatePicker x:Name="CheckOutDatepicker" Style="{StaticResource RoomSearch}"  DisplayDateEnd="2025-01-01" DisplayDateStart="2023-08-12" >
+                            <DatePicker.BlackoutDates>
+                                <CalendarDateRange End="{x:Static sys:DateTime.Today}"  />
+                            </DatePicker.BlackoutDates>
+                        </DatePicker>
+
+                        <Label Margin="25,0,15,0" Content="Гостей"  />
+                        <TextBox x:Name="HumanCount" Margin="15,0,15,0" Text="" MaxLength="1" />
+                        <Button Click="SearchRoomButton_Click"  HorizontalAlignment="Right" Content="Найти"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Background="#907B7A" Grid.Column="1" >
+                <ScrollViewer x:Name="Scroll1" Height="768"  VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Name="StackpanelForRoomCard">
+                        <TextBlock FontSize="24" Margin="100" Padding="100" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">Для вывода карточек номеров сначала укажите дату заезда и выезда, а также количество людей в номере</TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
+
+        <Grid Height="0" x:Name="Clients" >
+            <Border Margin="50">
+                <StackPanel Background="#907B7A">
+                    <Button  x:Name="AddNewClient" Click="AddNewClient_Click" Content="+Добавить гостя"/>
+                    <ScrollViewer Height="718" VerticalScrollBarVisibility="Hidden">
+                        <UniformGrid Name="UniformForClientCard" Columns="2">
+
+                        </UniformGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="Tarif" Height="0">
+            <Border Margin="15 0">
+                <ScrollViewer Height="728" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <Button x:Name="AddTariff" Click="AddTariff_Click" Content="+ Добавить тариф"/>
+                        <UniformGrid Name="UniformForTarifCard"  Columns="2">
+
+                        </UniformGrid>
+                    </StackPanel>
+                </ScrollViewer >
+            </Border>
+        </Grid>
+
+        <Grid x:Name="Reservations" Height="0" >
+            <Border Margin="50">
+                <StackPanel Background="#907B7A">
+
+                    <StackPanel Background="White" Orientation="Horizontal" >
+                        <DatePicker x:Name="ZaezdDatepicker"  Style="{StaticResource ReservationSearch}" DisplayDateEnd="2020-01-01" DisplayDateStart="2025-01-01" />
+                        <DatePicker x:Name="ViezdDatepicker" Style="{StaticResource ReservationSearch}" />
+                        <Button Click="FindReservationButton_Click"  HorizontalAlignment="Right" Content="Найти"/>
+                    </StackPanel>
+
+                    <ScrollViewer Height="630" VerticalScrollBarVisibility="Hidden">
+                        <ListView>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2">
+                                    </UniformGrid>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                    <clientCard:ClientCard ></clientCard:ClientCard>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        </ListView>
+                        <!--< UniformGrid Name="UniformForReservationCard" Columns="2">  </UniformGrid> -->
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="Reservation2"  Height="0">
+            <Border Padding="35">
+                <Grid  Background="White" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.17*"/>
+                        <RowDefinition Height="0.8*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Name="RoomName" Grid.Row="0" FontWeight="Bold" FontSize="40" Margin="10 0">Номер</Label>
+                    <Image x:Name="RoomImage" Margin="10 0"  Height="350" Grid.Row="1" Grid.Column="0"  ></Image>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" >
+                        <TextBlock x:Name="Summary"  FontSize="22" TextWrapping="Wrap"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <Image Source="/Photo/logo.png" Style="{StaticResource ForReservatin}"></Image>
+                                <Label x:Name="HumanCountinReservation" Style="{StaticResource LabelForFinalReservatin}"></Label>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <Image Source="/Photo/logo.png" Style="{StaticResource ForReservatin}" ></Image>
+                                <Label x:Name="RoomArea" Style="{StaticResource LabelForFinalReservatin}"></Label>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                <Image Source="/Photo/logo.png" Style="{StaticResource ForReservatin}" ></Image>
+                                <Label x:Name="RoomCount" Style="{StaticResource LabelForFinalReservatin}"></Label>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Background="#EECFAF" HorizontalAlignment="Center">
+                        <Label Content="Выберите гостя для бронирования: "/>
+                        <ComboBox x:Name="ClientList">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Surname}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding Patronymic}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding PhoneNumber}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding Email}" />
+                                        <TextBlock Text=" Паспортные данные: " />
+                                        <TextBlock Text="{Binding PassportSeries}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding PassportNumber}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Border Background="#907B7A"  Grid.Row="3" Grid.ColumnSpan="2"  >
+                        <ScrollViewer x:Name="ScrollFinalReservCard" VerticalScrollBarVisibility="Hidden">
+                            <StackPanel x:Name="StackPanelForFinalReservCard"  Grid.Row="2" Grid.ColumnSpan="2">
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </StackPanel>
+</Window>
+
