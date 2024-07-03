@@ -18,43 +18,47 @@ namespace Hotel
         public MainHotelPage()
         {
             InitializeComponent();
-            //List<Client> clientsList = new List<Client>();
-            //clientsList = context.Client.ToList();
-            //ClientList.Items.Clear();
+            CheckInDatepicker.DisplayDateStart = DateTime.Now.AddDays(1);
+            CheckInDatepicker.DisplayDateEnd = DateTime.Now.AddYears(1);
+            CheckOutDatepicker.DisplayDateStart = DateTime.Now.AddDays(2);
+            CheckOutDatepicker.DisplayDateEnd= DateTime.Now.AddYears(1);
+            ZaezdDatepicker.DisplayDateEnd = DateTime.Now.AddYears(1);
+            ViezdDatepicker.DisplayDateEnd = DateTime.Now.AddYears(1);
+            ZaezdDatepicker.DisplayDateStart = DateTime.Now.AddYears(-3);
             ClientList.ItemsSource = context.Client.ToList();
-            foreach (Client clients in context.Client.ToList())
-            {
-                ClientCard clientCard = new ClientCard();
-                clientCard.CCardFIO.Content = $"{clients.Surname} {clients.Name} {clients.Patronymic}";
-                clientCard.CCardPhone.Content += $"{clients.PhoneNumber}";
-                clientCard.CCardEmail.Content += $"{clients.Email}";
-                clientCard.CCardBirthday.Content += clients.Birthday.ToString("dd-MM-yyyy");
-                if (clients.Gender) clientCard.CCardGender.Content += " женский";
-                else clientCard.CCardGender.Content += " мужской";
-                clientCard.CCardSeries.Content += $"{clients.PassportSeries}";
-                clientCard.CCardNumber.Content += $"{clients.PassportNumber}";
-                clientCard.EditClient.Click += (sender, args) => EditClientButton_Click(context, clients);
-                UniformForClientCard.Children.Add(clientCard);
-            }
             foreach (Tariff tariff in context.Tariff.ToList())
             {
                 TarifCard tarifCard = new TarifCard();
-                tarifCard.TarifCardName.Text = $"{tariff.Name}";
-                tarifCard.TarifCardCost.Content = $"+ {tariff.Cost} рублей";
-                tarifCard.TarifCardSummary.Text = tariff.Summary;
-                if (tariff.Food) tarifCard.TarifCardList1.Content = "+ Питание";
-                if (tariff.Gym) tarifCard.TarifCardList2.Content = "+ Спортивный зал";
-                if (tariff.Transfer) tarifCard.TarifCardList3.Content = "+ Трансфер";
-                if (tariff.Wifi) tarifCard.TarifCardList4.Content = "+ Wi-Fi";
+                tarifCard.DataContext = tariff;
+                tarifCard.TarifCardCost.Content = $"+ {tariff.Cost}";
+                if (tariff.Food) tarifCard.TarifCardList1.Visibility = Visibility.Visible;
+                if (tariff.Gym) tarifCard.TarifCardList2.Visibility = Visibility.Visible;
+                if (tariff.Transfer) tarifCard.TarifCardList3.Visibility = Visibility.Visible;
+                if (tariff.Wifi) tarifCard.TarifCardList4.Visibility = Visibility.Visible;
                 tarifCard.EditTariff.Click += (sender, args) => EditButton_Click(context, tariff);
                 tarifCard.DeleteTariff.Click += (sender, args) => DeleteButton_Click(context, tariff, tarifCard);
                 tarifCard.Uid = $"{tariff.TariffID}";
                 UniformForTarifCard.Children.Add(tarifCard);
             }
+            GenerationClientCard();    
             GenerationReservationCard();
+        }
+        public void GenerationClientCard()
+        {
+            UniformForClientCard.Children.Clear();
+            foreach (Client clients in context.Client.ToList())
+            {
+                ClientCard clientCard = new ClientCard();
+                clientCard.DataContext = clients;
+                if (clients.Gender) clientCard.CCardGender.Content += " женский";
+                else clientCard.CCardGender.Content += " мужской";
+                clientCard.EditClient.Click += (sender, args) => EditClientButton_Click(context, clients);
+                UniformForClientCard.Children.Add(clientCard);
+            }
         }
         private void GenerationReservationCard()
         {
+            UniformForReservationCard.Children.Clear();
             foreach (Reservation reservation in context.Reservation.ToList())
             {
                 ReservationCard reservationCard = new ReservationCard();
@@ -69,6 +73,7 @@ namespace Hotel
                 reservationCard.RCardRoom.Content += $"{reservation.RoomID}";
                 reservationCard.RCardCost.Content += $"{reservation.FullCost} рублей";
                 reservationCard.CancelReservation.Click += CancelReservation_Click;
+                if(reservation.CheckiInDate<=DateTime.Now) reservationCard.CancelReservation.IsEnabled = false;
                 reservationCard.CancelReservation.Name += $"{reservation.ReservationID}";
                 UniformForReservationCard.Children.Add(reservationCard);
             }
@@ -161,16 +166,14 @@ namespace Hotel
         {
             var room = context.Room.Find(idSelectRoom);
             Client selectclient = (Client)ClientList.SelectedItem;
-            DateTime CheckIn = checkInDate;
-            DateTime CheckOut = checkOutDate;
             if (selectclient != null)
             {
                 Reservation reservation = new Reservation();
                 reservation.FullCost = fullcost;
                 reservation.ClientID = selectclient.ClientID;
                 reservation.RoomID = room.RoomID;
-                reservation.CheckiInDate = CheckIn;
-                reservation.CheckOutDate = CheckOut;
+                reservation.CheckiInDate = checkInDate;
+                reservation.CheckOutDate = checkOutDate;
                 reservation.ReservationDate = DateTime.Now;
                 context.Reservation.Add(reservation);
                 context.SaveChanges();
@@ -196,7 +199,7 @@ namespace Hotel
             Tariff tarif;
             DateTime zaezdDate = ZaezdDatepicker.SelectedDate ?? DateTime.MinValue;
             DateTime viezdDate = ViezdDatepicker.SelectedDate ?? DateTime.MinValue;
-            if (zaezdDate != DateTime.MinValue && viezdDate != DateTime.MinValue && zaezdDate <= viezdDate && zaezdDate >= Convert.ToDateTime("01.01.2020") && viezdDate >= Convert.ToDateTime("01.01.2025"))
+            if (zaezdDate != DateTime.MinValue && viezdDate != DateTime.MinValue && zaezdDate <= viezdDate && zaezdDate >= DateTime.Now.AddYears(-3) && viezdDate >= DateTime.Now.AddYears(-3))
             {
                 UniformForReservationCard.Children.Clear();
                 reservations = context.Reservation.Where(r => r.CheckiInDate >= zaezdDate && r.CheckOutDate <= viezdDate).ToList();
@@ -225,7 +228,7 @@ namespace Hotel
             List<Room> rooms = new List<Room>();
             DateTime checkInDate = CheckInDatepicker.SelectedDate ?? DateTime.MinValue;
             DateTime checkOutDate = CheckOutDatepicker.SelectedDate ?? DateTime.MinValue;
-            if (checkInDate != DateTime.MinValue && checkOutDate != DateTime.MinValue && checkInDate < checkOutDate && int.TryParse(HumanCount.Text, out int humancount) && checkInDate >= Convert.ToDateTime("08.12.2023") && checkOutDate <= Convert.ToDateTime("01.01.2025"))
+            if (checkInDate != DateTime.MinValue && checkOutDate != DateTime.MinValue && checkInDate < checkOutDate && int.TryParse(HumanCount.Text, out int humancount) && checkInDate >= DateTime.Now.AddDays(1) && checkOutDate <= DateTime.Now.AddYears(1))
             {
                 StackpanelForRoomCard.Children.Clear();
                 humancount = int.Parse(HumanCount.Text);
@@ -277,6 +280,7 @@ namespace Hotel
         }
         private void MenuItem_Client(object sender, RoutedEventArgs e)
         {
+            GenerationClientCard();
             Clients.Height = ActualHeight;
             Rooms.Height = 0;
             Tarif.Height = 0;
@@ -285,6 +289,7 @@ namespace Hotel
         }
         private void MenuItem_Reservation(object sender, RoutedEventArgs e)
         {
+            GenerationReservationCard();
             Clients.Height = 0;
             Rooms.Height = 0;
             Tarif.Height = 0;

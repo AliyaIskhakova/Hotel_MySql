@@ -10,6 +10,8 @@ namespace Hotel
         public EditClient(HotelEntities context, Client client)
         {
             InitializeComponent();
+            Birthday.DisplayDateStart = DateTime.Now.AddYears(-100);
+            Birthday.DisplayDateEnd = DateTime.Now.AddYears(-14);
             _context = context;
             _client = client;
             Surname.Text = client.Surname;
@@ -27,25 +29,32 @@ namespace Hotel
         {
             try
             {
+                Validate validate = new Validate();
+
                 if (!string.IsNullOrEmpty(Surname.Text.Trim()) && !string.IsNullOrEmpty(ClientName.Text.Trim()) && !string.IsNullOrEmpty(Phone.Text.Trim()) && !string.IsNullOrEmpty(Email.Text.Trim())
-                    && Birthday.SelectedDate.HasValue && Convert.ToInt32(SeriesPassport.Text) >= 1000 && Convert.ToInt32(NumberPassport.Text) >= 100000 && Convert.ToInt64(Phone.Text) >= 10000000000)
+                    && Birthday.SelectedDate.HasValue)
                 {
-                    _client.Surname = Surname.Text;
-                    _client.Name = ClientName.Text;
-                    _client.Patronymic = Patronymic.Text;
-                    DateTime birthday = Birthday.SelectedDate ?? DateTime.MinValue;
-                    _client.Birthday = birthday;
-                    if (GenderWomen.IsChecked == true) _client.Gender = true;
-                    if (GenderMen.IsChecked == true) _client.Gender = false;
-                    _client.PassportSeries = Convert.ToInt32(SeriesPassport.Text);
-                    _client.PassportNumber = Convert.ToInt32(NumberPassport.Text);
-                    _client.PhoneNumber = Phone.Text;
-                    _client.Email = Email.Text;
-                    _context.Client.Update(_client);
-                    _context.SaveChanges();
-                    this.Close();
+                    if (validate.ValidateAll(Surname.Text, ClientName.Text, Patronymic.Text, Phone.Text, Email.Text, SeriesPassport.Text, NumberPassport.Text, (DateTime)Birthday.SelectedDate))
+                    {
+
+                        _client.Surname = Surname.Text;
+                        _client.Name = ClientName.Text;
+                        _client.Patronymic = Patronymic.Text;
+                        DateTime birthday = Birthday.SelectedDate ?? DateTime.MinValue;
+                        _client.Birthday = birthday;
+                        if (GenderWomen.IsChecked == true) _client.Gender = true;
+                        if (GenderMen.IsChecked == true) _client.Gender = false;
+                        _client.PassportSeries = Convert.ToInt32(SeriesPassport.Text);
+                        _client.PassportNumber = Convert.ToInt32(NumberPassport.Text);
+                        _client.PhoneNumber = Phone.Text;
+                        _client.Email = Email.Text;
+                        _context.Client.Update(_client);
+                        _context.SaveChanges();
+                        this.Close();
+                    }
+                    else MessageBox.Show(validate.message);
                 }
-                else MessageBox.Show("Заполните все поля! Проверьте корректность данных!");
+                else MessageBox.Show("Заполните все поля!");
             }
             catch
             {

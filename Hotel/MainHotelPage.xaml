@@ -25,6 +25,38 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="35" />
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="10" Background="#C6B29D" BorderThickness="1" Padding="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="35" />
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="10" Background="Gray" BorderThickness="1" Padding="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="TextBox">
@@ -133,14 +165,14 @@
                     <StackPanel Background="White">
                         <Label FontSize="30" HorizontalAlignment="Center" FontFamily="Segoe UI Semibold">Бронирование</Label>
                         <Label Margin="25,0,15,0" Content="Дата заезда"  />
-                        <DatePicker x:Name="CheckInDatepicker" Style="{StaticResource RoomSearch}" DisplayDateEnd="2025-01-01" DisplayDateStart="2023-08-12" >
+                        <DatePicker x:Name="CheckInDatepicker" Style="{StaticResource RoomSearch}"  >
                             <DatePicker.BlackoutDates>
                                 <CalendarDateRange End="{x:Static sys:DateTime.Today}"  />
                             </DatePicker.BlackoutDates>
                         </DatePicker>
 
                         <Label Margin="25,0,15,0" Content="Дата выезда" />
-                        <DatePicker x:Name="CheckOutDatepicker" Style="{StaticResource RoomSearch}"  DisplayDateEnd="2025-01-01" DisplayDateStart="2023-08-12" >
+                        <DatePicker x:Name="CheckOutDatepicker" Style="{StaticResource RoomSearch}" >
                             <DatePicker.BlackoutDates>
                                 <CalendarDateRange End="{x:Static sys:DateTime.Today}"  />
                             </DatePicker.BlackoutDates>
@@ -167,9 +199,7 @@
                 <StackPanel Background="#907B7A">
                     <Button  x:Name="AddNewClient" Click="AddNewClient_Click" Content="+Добавить гостя"/>
                     <ScrollViewer Height="718" VerticalScrollBarVisibility="Hidden">
-                        <UniformGrid Name="UniformForClientCard" Columns="2">
-
-                        </UniformGrid>
+                        <UniformGrid Name="UniformForClientCard" Columns="2"></UniformGrid>
                     </ScrollViewer>
                 </StackPanel>
             </Border>
@@ -193,27 +223,13 @@
                 <StackPanel Background="#907B7A">
 
                     <StackPanel Background="White" Orientation="Horizontal" >
-                        <DatePicker x:Name="ZaezdDatepicker"  Style="{StaticResource ReservationSearch}" DisplayDateEnd="2020-01-01" DisplayDateStart="2025-01-01" />
+                        <DatePicker x:Name="ZaezdDatepicker"  Style="{StaticResource ReservationSearch}" DisplayDateStart="" />
                         <DatePicker x:Name="ViezdDatepicker" Style="{StaticResource ReservationSearch}" />
                         <Button Click="FindReservationButton_Click"  HorizontalAlignment="Right" Content="Найти"/>
                     </StackPanel>
 
                     <ScrollViewer Height="630" VerticalScrollBarVisibility="Hidden">
-                        <ListView>
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="2">
-                                    </UniformGrid>
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                        
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                    <clientCard:ClientCard ></clientCard:ClientCard>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        </ListView>
-                        <!--< UniformGrid Name="UniformForReservationCard" Columns="2">  </UniformGrid> -->
+                        <UniformGrid Name="UniformForReservationCard" Columns="2"></UniformGrid>
                     </ScrollViewer>
                 </StackPanel>
             </Border>

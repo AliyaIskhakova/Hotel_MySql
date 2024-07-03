@@ -25,6 +25,11 @@
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
+        <Style TargetType="Label" x:Key="CostStyle">
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
     </UserControl.Resources>
     <Border Margin="20">
         <Grid>
@@ -34,17 +39,20 @@
             </Grid.ColumnDefinitions>
             <Border Background="White"  Margin="20 0 0 0" Padding="25" Grid.Column="0">
                 <StackPanel HorizontalAlignment="Left">
-                    <TextBlock  x:Name="TarifCardName" TextWrapping="Wrap" FontWeight="Bold" FontSize="30"/>
-                    <TextBlock x:Name="TarifCardSummary" TextWrapping="Wrap" FontSize="20"/>
-                    <Label x:Name="TarifCardList1" />
-                    <Label x:Name="TarifCardList2" />
-                    <Label x:Name="TarifCardList3" />
-                    <Label x:Name="TarifCardList4" />
+                    <TextBlock  x:Name="TarifCardName" TextWrapping="Wrap" Text="{Binding Name}" FontWeight="Bold" FontSize="30"/>
+                    <TextBlock x:Name="TarifCardSummary" Text="{Binding Summary}" TextWrapping="Wrap" FontSize="20"/>
+                    <Label x:Name="TarifCardList1" Visibility="Collapsed" Content="+ Питание" />
+                    <Label x:Name="TarifCardList2" Visibility="Collapsed" Content="+ Спортивный зал"/>
+                    <Label x:Name="TarifCardList3" Visibility="Collapsed" Content="+ Трансфер"/>
+                    <Label x:Name="TarifCardList4" Visibility="Collapsed" Content="+ Wi-Fi"/>
                 </StackPanel>
             </Border>
             <Border Background="#907B7A" Margin="10 0 0 0" Grid.Column="1">
                 <StackPanel   VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Label x:Name="TarifCardCost" FontWeight="Bold" FontSize="36"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Style="{StaticResource CostStyle}" Name="TarifCardCost"></Label>
+                        <Label Style="{StaticResource CostStyle}" > рублей</Label>
+                    </StackPanel>
                     <Button Content="Изменить" x:Name="EditTariff"/>
                     <Button Content="Удалить" x:Name="DeleteTariff"/>
                 </StackPanel>
