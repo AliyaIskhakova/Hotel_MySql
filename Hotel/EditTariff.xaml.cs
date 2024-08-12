@@ -1,6 +1,4 @@
 ﻿using Hotel.Model;
-using System;
-//using System.Data.Entity.Migrations;
 using System.Windows;
 
 namespace Hotel

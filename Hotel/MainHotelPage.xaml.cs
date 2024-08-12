@@ -1,9 +1,4 @@
 ﻿using Hotel.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -233,7 +228,7 @@ namespace Hotel
                 StackpanelForRoomCard.Children.Clear();
                 humancount = int.Parse(HumanCount.Text);
                 Reservation reservation = new Reservation();
-                rooms = context.Room.Where(r => r.PeopleQuantity >= humancount && !context.Reservation.Any(b => b.RoomID == r.RoomID && checkInDate <= b.CheckOutDate && checkOutDate >= b.CheckiInDate)).ToList();
+                rooms = context.Room.Where(r => r.PeopleQuantity == humancount && !context.Reservation.Any(b => b.RoomID == r.RoomID && checkInDate <= b.CheckOutDate && checkOutDate >= b.CheckiInDate)).ToList();
                 foreach (var searchRoom in rooms)
                 {
                     RoomCard roomCard = new RoomCard();

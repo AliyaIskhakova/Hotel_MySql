@@ -68,10 +68,7 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
                 <Label  Content="День рождения:"/>
-                <DatePicker FontSize="20"  x:Name="Birthday" DisplayDateStart="1923-01-01" DisplayDateEnd="2009-12-07">
-                    <DatePicker.BlackoutDates>
-                        <CalendarDateRange Start="{x:Static sys:DateTime.Today}"  />
-                    </DatePicker.BlackoutDates>
+                <DatePicker FontSize="20"  x:Name="Birthday" >
                 </DatePicker>
             </StackPanel>
             <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
